@@ -1,0 +1,14 @@
+{
+  "name": "typescript-starter",
+  "version": "1.0.0",
+  "description": "nitric typescript starter template",
+  "main": "index.js",
+  "private": true,
+  "dependencies": {
+    "@nitric/sdk": "rc-latest",
+    "dotenv": "^16.0.0",
+    "next-auth": "^4.2.1",
+    "short-uuid": "^4.2.0",
+    "universal-cookie": "^4.0.4"
+  }
+}

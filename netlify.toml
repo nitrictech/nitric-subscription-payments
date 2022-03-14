@@ -1,0 +1,5 @@
+[template.environment]
+API_BASE_URL = "API Base URL"
+
+[build]
+  publish = "apps/web/.next"
