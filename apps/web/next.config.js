@@ -1,5 +1,8 @@
 module.exports = {
   reactStrictMode: true,
+  images: {
+    domains: ["avatars.githubusercontent.com"],
+  },
   api: {
     bodyParser: {
       bodyParser: false, // Disallow body parsing, consume as stream

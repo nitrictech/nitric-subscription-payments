@@ -9,6 +9,6 @@
     "dotenv": "^16.0.0",
     "next-auth": "^4.2.1",
     "short-uuid": "^4.2.0",
-    "universal-cookie": "^4.0.4"
+    "stripe": "^8.209.0"
   }
 }

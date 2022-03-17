@@ -1,6 +1,5 @@
-import NextAuth, { Session } from "next-auth";
+import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
-import { NitricAdapter } from "@nitric/next-auth-adapter";
 
 export default NextAuth({
   // Configure one or more authentication providers
@@ -8,26 +7,33 @@ export default NextAuth({
     GithubProvider({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
-      checks: "state",
     }),
   ],
-  adapter: NitricAdapter(),
   callbacks: {
-    async jwt({ token, user, account, profile, isNewUser }) {
-      if (user) {
-        token.id = user.id;
-        token.role = user.role;
+    async jwt({ token, user }) {
+      if (user || !token.id) {
+        // call nitric API to create customer
+        const result = await fetch(
+          `${process.env.API_BASE_URL}/apis/main/users`,
+          {
+            body: JSON.stringify(user),
+            method: "POST",
+          }
+        ).then((res) => res.json());
+
+        token.id = result.id;
+        token.accountId = result.accountId;
       }
 
       return token;
     },
-    async session({ session, token, user }) {
-      const sess: Session = {
+    async session({ session, token }) {
+      const sess = {
         ...session,
         user: {
           ...session.user,
-          // id: token.id as string,
-          // role: token.role as string,
+          id: token.id as string,
+          role: token.role as string,
         },
       };
 

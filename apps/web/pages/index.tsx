@@ -1,24 +1,35 @@
+import Pricing from "@/components/Pricing";
 import Layout from "components/Layout";
-import { useSession, signIn, signOut } from "next-auth/react";
+import fetcher from "lib/fetcher";
+import { InferGetStaticPropsType } from "next";
 
-export default function Index() {
-  const { data: session, status } = useSession();
-
+export default function Index({
+  products,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <Layout>
-      {session ? (
-        <>
-          Signed in as {session.user.email} <br />
-          {JSON.stringify(session, null, "\t")}
-          status: {status}
-          <button onClick={() => signOut()}>Sign out</button>
-        </>
-      ) : (
-        <>
-          <h1>Pricing Plans</h1>
-          <button onClick={() => signIn()}>Sign in</button>
-        </>
-      )}
+      <Pricing products={products} />
     </Layout>
   );
+}
+
+export async function getStaticProps() {
+  try {
+    const products = await fetcher(
+      `${process.env.API_BASE_URL}/apis/main/products`
+    );
+
+    return {
+      props: {
+        products,
+      },
+      revalidate: 50,
+    };
+  } catch (e) {
+    return {
+      props: {
+        products: [],
+      },
+    };
+  }
 }

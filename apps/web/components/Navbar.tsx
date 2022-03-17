@@ -1,14 +1,14 @@
 import Link from "next/link";
+import Image from "next/image";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useUser } from "lib/useUser";
 
 const Navbar = () => {
-  const { data: session, status } = useSession();
-
-  const router = useRouter();
+  const { user } = useUser();
 
   return (
-    <nav>
+    <nav className='bg-slate-50 shadow-lg'>
       <a href='#skip' className='sr-only focus:not-sr-only'>
         Skip to content
       </a>
@@ -18,24 +18,40 @@ const Navbar = () => {
             <Link href='/'>
               <a aria-label='Logo'>{/* <Logo /> */}</a>
             </Link>
-            <nav className='space-x-2 ml-6 hidden lg:block'>
+            <nav className='space-x-8 ml-6 hidden lg:block'>
               <Link href='/'>
-                <a>Pricing</a>
+                <a className='font-semibold hover:text-indigo-900'>Pricing</a>
               </Link>
               <Link href='/account'>
-                <a>Account</a>
+                <a className='font-semibold hover:text-indigo-900'>Account</a>
               </Link>
             </nav>
           </div>
 
-          <div className='flex flex-1 justify-end space-x-8'>
-            {session ? (
-              <button onClick={() => signOut()}>
-                <a>Sign out</a>
-              </button>
+          <div className='flex flex-1 justify-end space-x-4'>
+            {user ? (
+              <>
+                <Link href='/account' passHref>
+                  <a className='flex ring-indigo-400 ring-2 rounded-full'>
+                    <Image
+                      className='rounded-full'
+                      src={user.image}
+                      alt=''
+                      height={30}
+                      width={30}
+                    />
+                  </a>
+                </Link>
+
+                <button onClick={() => signOut()}>
+                  <a className='font-semibold hover:text-indigo-900'>
+                    Sign out
+                  </a>
+                </button>
+              </>
             ) : (
               <Link href='/api/auth/signin'>
-                <a>Sign in</a>
+                <a className='font-semibold hover:text-indigo-900'>Sign in</a>
               </Link>
             )}
           </div>

@@ -12,7 +12,9 @@
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "nitric-run": "nitric run \"/apis/saas-api/functions/*.ts\" --verbose 2"
+    "nitric-run": "nitric run \"/apis/saas-api/functions/*.ts\" --verbose 2",
+    "stripe-fixtures": "stripe fixtures fixtures/stripe-fixtures.json",
+    "stripe-forward-events": "stripe listen --forward-to localhost:9001/apis/main/payments/webhooks"
   },
   "devDependencies": {
     "prettier": "^2.5.1",
